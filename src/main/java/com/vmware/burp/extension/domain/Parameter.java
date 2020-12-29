@@ -7,20 +7,24 @@
 package com.vmware.burp.extension.domain;
 
 import burp.IParameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Parameter {
 
+   private static final Logger log = LoggerFactory.getLogger(Parameter.class);
+   
    @XmlElement(required=true)
    private String name;
    
@@ -35,11 +39,12 @@ public class Parameter {
    }
 
    public Parameter(IParameter iParameter) throws UnsupportedEncodingException {
-      this.name = URLDecoder.decode(iParameter.getName(), StandardCharsets.UTF_8.toString());
+      this.name = URLDecoder.decode(iParameter.getName(), "UTF-8");
       try {
-         this.value = URLDecoder.decode(iParameter.getValue(), StandardCharsets.UTF_8.toString());
+         this.value = URLDecoder.decode(iParameter.getValue(), "UTF-8");
       } catch(UnsupportedEncodingException ex) {
-         this.value = URLDecoder.decode(URLEncoder.encode(iParameter.getValue()), StandardCharsets.UTF_8.toString());
+         log.error(iParameter.getValue());
+         this.value = URLDecoder.decode(URLEncoder.encode(iParameter.getValue(), "UTF-8"), "UTF-8");
       }
       this.type = ParameterType.getEnum(iParameter.getType());
    }
