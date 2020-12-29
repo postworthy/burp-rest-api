@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
