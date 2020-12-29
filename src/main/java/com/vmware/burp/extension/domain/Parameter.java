@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -33,8 +34,12 @@ public class Parameter {
    }
 
    public Parameter(IParameter iParameter) throws UnsupportedEncodingException {
-      this.name = URLDecoder.decode(iParameter.getName(), "UTF-8");
-      this.value = URLDecoder.decode(iParameter.getValue(), "UTF-8");
+      this.name = URLDecoder.decode(iParameter.getName(), StandardCharsets.UTF_8.toString());
+      try {
+         this.value = URLDecoder.decode(iParameter.getValue(), StandardCharsets.UTF_8.toString());
+      } catch(UnsupportedEncodingException ex) {
+         this.value = URLDecoder.decode(URLEncoder.encode(iParameter.getValue()), StandardCharsets.UTF_8.toString());
+      }
       this.type = ParameterType.getEnum(iParameter.getType());
    }
 
