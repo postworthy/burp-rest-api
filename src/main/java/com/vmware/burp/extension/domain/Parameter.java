@@ -41,6 +41,12 @@ public class Parameter {
    public Parameter(IParameter iParameter) throws UnsupportedEncodingException {
       this.name = URLDecoder.decode(iParameter.getName(), "UTF-8");
       try {
+         this.name = URLDecoder.decode(iParameter.getName(), "UTF-8");
+      } catch(UnsupportedEncodingException ex) {
+         log.error(iParameter.getName());
+         this.name = URLDecoder.decode(URLEncoder.encode(iParameter.getName(), "UTF-8"), "UTF-8");
+      }
+      try {
          this.value = URLDecoder.decode(iParameter.getValue(), "UTF-8");
       } catch(UnsupportedEncodingException ex) {
          log.error(iParameter.getValue());
